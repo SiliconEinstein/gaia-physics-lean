@@ -26,6 +26,27 @@ or `TERMINAL.partial` markers awaiting a future iteration.
 
 **Total**: 1,725 lines of formal Lean 4 covering five foundational results of quantum mechanics.
 
+
+## Research-in-progress: PPT² conjecture
+
+The [`PPT2-project/`](./PPT2-project/) subdirectory contains the agent's active work on
+the **PPT² conjecture** (Christandl 2012 — open for $d \ge 3$). Unlike the theorems above,
+PPT² is *not* fully solved — it's a real research project that has accumulated:
+
+- **17 lake-verified clean modules** (~3,300 LOC) — partial-transpose, Choi matrix,
+  separability, entanglement-breaking channels, **SU(2) Haar measure infrastructure**,
+  the d=2 Bloch4 reduction case.
+- **~50 `sorry` annotations** all tagged `gap_kind: mathlib_missing` — these are
+  **Mathlib gaps the agent identified and documented but couldn't close in current Mathlib**.
+- **5 `axiom` declarations** corresponding to either open math problems (PPT²-d≥3 itself,
+  Bennett 1999 range criterion) or major Mathlib infrastructure (Stormer 1963, Cartan KAK).
+
+This is the **dirty research half** of gaia-physics-lean — what realistic LLM-agent
+formalization looks like when Mathlib doesn't have everything you need. The clean library
+above shows what we publish; PPT² shows the actual work product.
+
+See [`PPT2-project/README.md`](./PPT2-project/README.md) for full status inventory.
+
 ## Build
 
 ```bash

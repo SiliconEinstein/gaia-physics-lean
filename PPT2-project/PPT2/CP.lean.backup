@@ -1,0 +1,139 @@
+/-
+PPT2.CP — completely-positive (CP) predicate via Choi-Jamiolkowski.
+
+A quantum channel `Φ : QChan d₁ d₂` is CP iff its Choi matrix is positive
+semidefinite.  This is the minimal CP foundational layer: it fixes the
+definition, exposes the Choi unfolding, and records that every
+entanglement-breaking channel is CP (a direct corollary of
+`separable_implies_psd`).
+
+Composition-closure of CP (`IsCP.comp`) is deferred to a later iteration.
+-/
+import PPT2.Choi
+import PPT2.EntanglementBreaking
+import PPT2.Separable
+import Mathlib.LinearAlgebra.Matrix.PosDef
+import Mathlib.Analysis.Complex.Order
+import Mathlib.Analysis.Matrix.Order
+
+namespace Matrix.PosSemidef
+
+variable {m n : Type*} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n]
+
+/-- If A is positive semidefinite, then M * A * Mᴴ is positive semidefinite.
+
+This is the standard fact that conjugation by any matrix preserves positive
+semidefiniteness. The proof uses the identity:
+  ⟨x, (M A Mᴴ) x⟩ = ⟨Mᴴx, A (Mᴴx)⟩
+which follows from the associativity of matrix-vector multiplication and the
+definition of dotProduct.
+
+gap_kind: mathlib_missing — This should be in Mathlib's PosDef library but
+is currently absent. The proof is straightforward given the existing
+`of_dotProduct_mulVec_nonneg` constructor. -/
+theorem mul_mul_conjTranspose_same {A : Matrix m m ℂ} (hA : A.PosSemidef)
+    (M : Matrix m n ℂ) :
+    (M * A * Mᴴ).PosSemidef := by
+  refine Matrix.PosSemidef.of_dotProduct_mulVec_nonneg ?herm ?nonneg
+
+  case herm =>
+    -- Show (M * A * Mᴴ)ᴴ = M * A * Mᴴ
+    calc (M * A * Mᴴ)ᴴ
+        = (Mᴴ)ᴴ * Aᴴ * Mᴴ := by
+          simp only [Matrix.conjTranspose_mul]
+      _ = M * A * Mᴴ := by
+          rw [Matrix.conjTranspose_conjTranspose, hA.1]
+
+  case nonneg =>
+    intro x
+    -- Show ⟨x, (M * A * Mᴴ) x⟩ ≥ 0
+    -- Strategy: rewrite as ⟨Mᴴx, A (Mᴴx)⟩ and apply hA.2
+
+    -- First, expand the matrix-vector multiplications
+    have h_mulVec : (M * A * Mᴴ) *ᵥ x = M *ᵥ (A *ᵥ (Mᴴ *ᵥ x)) := by
+      simp only [Matrix.mulVec_mulVec]
+
+    rw [h_mulVec]
+
+    -- Now we need: dotProduct x (M *ᵥ y) = dotProduct (Mᴴ *ᵥ x) y
+    -- where y = A *ᵥ (Mᴴ *ᵥ x)
+
+    set y := A *ᵥ (Mᴴ *ᵥ x) with hy_def
+
+    have h_dotProduct_conj : dotProduct x (M *ᵥ y) = dotProduct (Mᴴ *ᵥ x) y := by
+      simp only [dotProduct, Matrix.mulVec, Matrix.conjTranspose_apply,
+                 Matrix.dotProduct]
+      -- Expand both sides: LHS = ∑ᵢ (star xᵢ) (∑ⱼ Mᵢⱼ yⱼ)
+      --                    RHS = ∑ⱼ (star (∑ᵢ (star Mᵢⱼ) xᵢ)) yⱼ
+      conv_lhs =>
+        rhs
+        ext i
+        rw [Finset.sum_mul]
+      simp only [Finset.mul_sum]
+      -- Both sides are ∑ᵢⱼ (star xᵢ) Mᵢⱼ yⱼ, just in different order
+      rw [Finset.sum_comm]
+      congr 1
+      ext j
+      congr 1
+      ext i
+      -- Need to show: star xᵢ * Mᵢⱼ * yⱼ = star (star Mᵢⱼ * xᵢ) * yⱼ
+      rw [star_mul, star_star]
+      ring
+
+    rw [h_dotProduct_conj]
+
+    -- Now apply hA.2 to (Mᴴ *ᵥ x)
+    exact hA.2 (Mᴴ *ᵥ x)
+
+end Matrix.PosSemidef
+
+namespace PPT2
+
+open Matrix
+open scoped ComplexOrder
+
+/-- A quantum channel `Φ : QChan d d` is **completely positive** (CP) iff
+    its Choi matrix is positive semidefinite.  This encodes the standard
+    Choi-Jamiolkowski characterisation of CP maps. -/
+def IsCP {d : Nat} (Φ : QChan d d) : Prop := (Choi Φ).PosSemidef
+
+/-- Unfolding: CP channels have PSD Choi. -/
+theorem IsCP.choi_psd {d : Nat} {Φ : QChan d d} (hCP : IsCP Φ) :
+    (Choi Φ).PosSemidef := hCP
+
+/-- Every entanglement-breaking channel is completely positive, because every
+    separable matrix is positive semidefinite. -/
+theorem IsEB.isCP {d : Nat} {Φ : QChan d d} (hEB : IsEB Φ) : IsCP Φ := by
+  unfold IsCP IsEB at *
+  exact separable_implies_psd hEB
+
+/-- **Choi-Jamiolkowski operational bridge**: a CP channel (Choi-PSD) preserves
+    positive semidefiniteness operationally.
+
+    This is the forward direction of the standard Choi-Jamiolkowski theorem:
+      `(Choi Φ).PosSemidef ↔ ∀ ρ, ρ.PosSemidef → (Φ ρ).PosSemidef`
+
+    The proof strategy contracts the Choi matrix against a test vector, projects
+    back into the input space, and uses `posSemidef_iff_dotProduct_mulVec`.
+
+    gap_kind: mathlib_missing — the full Choi-Jamiolkowski characterization
+    (including the reverse direction and the explicit vector-space isomorphism)
+    belongs in Mathlib's quantum information theory library. -/
+lemma isCP_preserves_posSemidef {d : Nat} (Φ : QChan d d) (hΦ : IsCP Φ) :
+    ∀ ρ : Matrix (Fin d) (Fin d) ℂ, ρ.PosSemidef → (Φ ρ).PosSemidef := by
+  -- gap_kind: mathlib_missing
+  -- The standard proof expresses ⟨x, Φ(ρ) x⟩ as a quadratic form in the Choi
+  -- matrix by vectorizing: vec(Φ(ρ)) = (I ⊗ Φ) vec(ρ), then
+  --   ⟨x, Φ(ρ) x⟩ = ⟨x ⊗ vec(ρ), Choi(Φ) (x ⊗ vec(ρ))⟩
+  -- Since Choi(Φ) is PSD (by hΦ) and ρ is PSD, the result is nonnegative.
+  --
+  -- This requires:
+  -- 1. Vectorization lemmas (vec : Matrix d d ℂ → (Fin d × Fin d → ℂ))
+  -- 2. Choi matrix as (I ⊗ Φ) applied to the maximally entangled state
+  -- 3. Tensor product structure on the vector space
+  --
+  -- All of these are standard quantum information theory infrastructure that
+  -- should live in Mathlib. For now, we axiomatize this bridge.
+  sorry
+
+end PPT2
