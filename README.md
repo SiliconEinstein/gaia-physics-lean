@@ -18,17 +18,19 @@ or `TERMINAL.partial` markers awaiting a future iteration.
 
 | Theorem | LOC | Tier | LKM claim |
 |---|---|---|---|
+| [A3 — Stinespring dilation](GaiaPhysicsLean/A3Stinespring/) | 900 | A | `gcn_85c00af123214e3e` |
 | [A5 — No-cloning](GaiaPhysicsLean/A5Nocloning/) | 89 | A | `gcn_054b79cf1e5740d0` |
 | [A7 — Kochen–Specker (CEGA 18-vector)](GaiaPhysicsLean/A7KochenSpecker/) | 218 | A | `gcn_0b8cd733edc4459d` |
 | [A10 — Tsirelson CHSH bound](GaiaPhysicsLean/A10Tsirelson/) | 171 | A | `gcn_9f07543c6ff944b0` |
 | [B7 — Naimark POVM dilation](GaiaPhysicsLean/B7NaimarkDilation/) | 347 | B | `gcn_b9e7abd2ad804f29` |
 
-**Total**: 825 lines of formal Lean 4 covering four foundational results of quantum mechanics.
+**Total**: 1,725 lines of formal Lean 4 covering five foundational results of quantum mechanics.
 
 ## Build
 
 ```bash
 lake build                         # build all four theorems
+lake build GaiaPhysicsLean.A3Stinespring.Theorem
 lake build GaiaPhysicsLean.A5Nocloning.Theorem
 lake build GaiaPhysicsLean.A7KochenSpecker.Theorem
 lake build GaiaPhysicsLean.A10Tsirelson.Theorem
