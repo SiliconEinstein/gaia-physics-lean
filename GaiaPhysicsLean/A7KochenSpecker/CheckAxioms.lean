@@ -1,0 +1,3 @@
+import GaiaPhysicsLean.A7KochenSpecker.Theorem
+
+#print axioms GaiaPhysicsLean.A7KochenSpecker.kochen_specker_18vec_no_valuation
