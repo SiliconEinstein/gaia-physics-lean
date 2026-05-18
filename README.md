@@ -4,7 +4,7 @@ Lean 4 formalizations of theorems from **physics and quantum information**, auto
 discovered and proved by the [`gaia-discovery`](https://github.com/SiliconEinstein/gaia-discovery)
 agentic-loop system on top of [Mathlib4](https://leanprover-community.github.io/mathlib4_docs/).
 
-Each problem in this repo satisfies all three strict criteria:
+Each theorem in this repo satisfies all three strict criteria:
 
 1. **`lake build` returns `rc=0`** — the Lean kernel type-checks the entire dependency tree.
 2. **`#print axioms` lists only the standard three**: `propext`, `Classical.choice`, `Quot.sound`.
@@ -14,7 +14,10 @@ Anything below that bar (partial proofs with `sorry`, axiom-padded proofs, build
 **not** in this repository — those live in the `gaia-discovery` working tree as `TERMINAL.stuck`
 or `TERMINAL.partial` markers awaiting a future iteration.
 
-## Index
+## Index — unconditional theorems
+
+These are *fully Mathlib-grounded* — no hypotheses are added beyond what the
+informal statement requires. The agent built every Mathlib gap it ran into.
 
 | Theorem | LOC | Tier | LKM claim |
 |---|---|---|---|
@@ -24,7 +27,25 @@ or `TERMINAL.partial` markers awaiting a future iteration.
 | [A10 — Tsirelson CHSH bound](GaiaPhysicsLean/A10Tsirelson/) | 171 | A | `gcn_9f07543c6ff944b0` |
 | [B7 — Naimark POVM dilation](GaiaPhysicsLean/B7NaimarkDilation/) | 347 | B | `gcn_b9e7abd2ad804f29` |
 
-**Total**: 1,725 lines of formal Lean 4 covering five foundational results of quantum mechanics.
+**Subtotal**: 1,725 lines covering five foundational results of quantum mechanics.
+
+## Index — *conditional* theorems
+
+These satisfy criteria 1–3 mechanically (lake builds, only standard axioms, no
+`sorry` on the main path), but the proof takes a `Type`-valued *data bundle*
+as a hypothesis — the bundle encodes a substantial piece of Mathlib
+infrastructure that nobody (gaia or otherwise) has formalized yet. Each entry's
+README explains exactly what's been packaged into hypothesis-data. Honesty
+gate: red-team did not find an axiom shortcut or target-weakening; the
+"weakening" is purely in *what counts as a witness*, not the statement.
+
+| Theorem | LOC | Tier | LKM claim | Hypothesis bundle |
+|---|---|---|---|---|
+| [A9 — 2D TQFT ↔ commutative Frobenius algebra](GaiaPhysicsLean/A92dTqftFrobenius/) | 322 | A | `gcn_c8351754bdb44e38` | `TwoCobUP.WithExtend` (free-SMC on one self-dual object) |
+
+**Subtotal**: 322 lines.
+
+**Grand total**: 2,047 lines, 6 theorems (5 unconditional + 1 conditional).
 
 
 ## Research-in-progress: PPT² conjecture
@@ -50,10 +71,11 @@ See [`PPT2-project/README.md`](./PPT2-project/README.md) for full status invento
 ## Build
 
 ```bash
-lake build                         # build all four theorems
+lake build                         # build all six theorems
 lake build GaiaPhysicsLean.A3Stinespring.Theorem
 lake build GaiaPhysicsLean.A5Nocloning.Theorem
 lake build GaiaPhysicsLean.A7KochenSpecker.Theorem
+lake build GaiaPhysicsLean.A92dTqftFrobenius.Theorem
 lake build GaiaPhysicsLean.A10Tsirelson.Theorem
 lake build GaiaPhysicsLean.B7NaimarkDilation.Theorem
 ```
