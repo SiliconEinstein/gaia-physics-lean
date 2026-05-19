@@ -1,5 +1,6 @@
 -- gaia-physics-lean — Lean 4 formalizations of physics theorems
 -- discovered & formalized by the gaia-discovery agentic loop.
+import GaiaPhysicsLean.A2ChoiTheorem.Theorem
 import GaiaPhysicsLean.A3Stinespring.Theorem
 import GaiaPhysicsLean.A5Nocloning.Theorem
 import GaiaPhysicsLean.A7KochenSpecker.Theorem

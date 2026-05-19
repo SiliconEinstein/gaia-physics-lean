@@ -30,13 +30,14 @@ informal statement requires. The agent built every Mathlib gap it ran into.
 
 | Theorem | LOC | Tier | LKM claim |
 |---|---|---|---|
+| [A2 — Choi's theorem (CP ⇔ PSD)](GaiaPhysicsLean/A2ChoiTheorem/) | 375 | A | `gcn_81765219a10f496c` |
 | [A3 — Stinespring dilation](GaiaPhysicsLean/A3Stinespring/) | 900 | A | `gcn_85c00af123214e3e` |
 | [A5 — No-cloning](GaiaPhysicsLean/A5Nocloning/) | 89 | A | `gcn_054b79cf1e5740d0` |
 | [A7 — Kochen–Specker (CEGA 18-vector)](GaiaPhysicsLean/A7KochenSpecker/) | 218 | A | `gcn_0b8cd733edc4459d` |
 | [A10 — Tsirelson CHSH bound](GaiaPhysicsLean/A10Tsirelson/) | 171 | A | `gcn_9f07543c6ff944b0` |
 | [B7 — Naimark POVM dilation](GaiaPhysicsLean/B7NaimarkDilation/) | 347 | B | `gcn_b9e7abd2ad804f29` |
 
-**Subtotal**: 1,725 lines covering five foundational results of quantum mechanics.
+**Subtotal**: 2,100 lines covering six foundational results of quantum mechanics.
 
 ## Index — *conditional* theorems
 
@@ -73,7 +74,7 @@ no hidden sorries or undocumented axioms elsewhere in the module.
 
 **Subtotal**: 144 lines.
 
-**Grand total**: 2,191 lines, 7 theorems (5 unconditional + 1 conditional + 1 C-tier statement-only).
+**Grand total**: 2,566 lines, 8 theorems (6 unconditional + 1 conditional + 1 C-tier statement-only).
 
 
 ## Research-in-progress: PPT² conjecture
@@ -99,7 +100,8 @@ See [`PPT2-project/README.md`](./PPT2-project/README.md) for full status invento
 ## Build
 
 ```bash
-lake build                         # build all seven theorems
+lake build                         # build all eight theorems
+lake build GaiaPhysicsLean.A2ChoiTheorem.Theorem
 lake build GaiaPhysicsLean.A3Stinespring.Theorem
 lake build GaiaPhysicsLean.A5Nocloning.Theorem
 lake build GaiaPhysicsLean.A7KochenSpecker.Theorem
