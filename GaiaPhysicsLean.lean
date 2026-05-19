@@ -6,3 +6,4 @@ import GaiaPhysicsLean.A7KochenSpecker.Theorem
 import GaiaPhysicsLean.A92dTqftFrobenius.Theorem
 import GaiaPhysicsLean.A10Tsirelson.Theorem
 import GaiaPhysicsLean.B7NaimarkDilation.Theorem
+import GaiaPhysicsLean.C1ReehSchliederAxiomatic.Theorem

@@ -4,15 +4,24 @@ Lean 4 formalizations of theorems from **physics and quantum information**, auto
 discovered and proved by the [`gaia-discovery`](https://github.com/SiliconEinstein/gaia-discovery)
 agentic-loop system on top of [Mathlib4](https://leanprover-community.github.io/mathlib4_docs/).
 
-Each theorem in this repo satisfies all three strict criteria:
+Each theorem in this repo satisfies **tier-appropriate** correctness criteria;
+all three tiers share criterion 1, and the *unconditional* tier additionally
+satisfies criteria 2-3.
 
-1. **`lake build` returns `rc=0`** — the Lean kernel type-checks the entire dependency tree.
-2. **`#print axioms` lists only the standard three**: `propext`, `Classical.choice`, `Quot.sound`.
+1. **`lake build` returns `rc=0`** — the Lean kernel type-checks the entire
+   dependency tree. (All tiers.)
+2. **`#print axioms` lists only the standard three**: `propext`,
+   `Classical.choice`, `Quot.sound`. (Unconditional + conditional tiers.)
 3. **Zero `sorry` placeholders** in the main proof tree.
+   (Unconditional tier only — conditional tier may have an axiomatic
+   Lindblad/Solovay-style hypothesis bundle; C-tier has exactly one
+   documented `sorry` per theorem.)
 
-Anything below that bar (partial proofs with `sorry`, axiom-padded proofs, build failures) is
-**not** in this repository — those live in the `gaia-discovery` working tree as `TERMINAL.stuck`
-or `TERMINAL.partial` markers awaiting a future iteration.
+Anything below the tier-appropriate bar (undocumented `sorry`, axiom-padded
+"proofs" that hide the target, build failures, mis-classified tier) is **not**
+in this repository — those live in the [`gaia-discovery`](https://github.com/SiliconEinstein/gaia-discovery)
+working tree as `TERMINAL.stuck` / `TERMINAL.fake_success` markers awaiting
+either a future iteration or honest re-classification.
 
 ## Index — unconditional theorems
 
@@ -45,7 +54,26 @@ gate: red-team did not find an axiom shortcut or target-weakening; the
 
 **Subtotal**: 322 lines.
 
-**Grand total**: 2,047 lines, 6 theorems (5 unconditional + 1 conditional).
+## Index — *axiomatic statement-only* (C-tier)
+
+These are problems whose informal statement cannot be made fully Mathlib-formal
+because Mathlib lacks the substrate (e.g. von-Neumann-algebra modular theory,
+free symmetric monoidal categories, AQFT operator-algebra infrastructure).
+A C-tier deliverable formalizes the **statement** against an axiomatized
+substrate (opaque types + structures bundling the framework axioms) and
+documents the proof gap with paper-ref + Mathlib-PR-plan + LOC-estimate.
+
+The `sorry` on the main path is *the deliverable*, not a smell. There is
+**exactly one** `sorry` per C-tier theorem, and it is *the* documented gap;
+no hidden sorries or undocumented axioms elsewhere in the module.
+
+| Theorem | LOC | Tier | LKM claim | Substrate axioms |
+|---|---|---|---|---|
+| [C1 — Reeh–Schlieder (cyclic + separating)](GaiaPhysicsLean/C1ReehSchliederAxiomatic/) | 144 | C | `gcn_687a62424c964753` | Haag–Kastler framework (`MinkowskiSpace`, `HilbertSpace`, `BoundedOp`, `LocalNet`, `VacuumRep`) |
+
+**Subtotal**: 144 lines.
+
+**Grand total**: 2,191 lines, 7 theorems (5 unconditional + 1 conditional + 1 C-tier statement-only).
 
 
 ## Research-in-progress: PPT² conjecture
@@ -71,13 +99,14 @@ See [`PPT2-project/README.md`](./PPT2-project/README.md) for full status invento
 ## Build
 
 ```bash
-lake build                         # build all six theorems
+lake build                         # build all seven theorems
 lake build GaiaPhysicsLean.A3Stinespring.Theorem
 lake build GaiaPhysicsLean.A5Nocloning.Theorem
 lake build GaiaPhysicsLean.A7KochenSpecker.Theorem
-lake build GaiaPhysicsLean.A92dTqftFrobenius.Theorem
+lake build GaiaPhysicsLean.A92dTqftFrobenius.Theorem    # conditional
 lake build GaiaPhysicsLean.A10Tsirelson.Theorem
 lake build GaiaPhysicsLean.B7NaimarkDilation.Theorem
+lake build GaiaPhysicsLean.C1ReehSchliederAxiomatic.Theorem  # C-tier (single documented sorry)
 ```
 
 First-time `lake build` will pull and compile Mathlib4 (≈30 minutes on cold cache).
