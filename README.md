@@ -51,9 +51,10 @@ gate: red-team did not find an axiom shortcut or target-weakening; the
 
 | Theorem | LOC | Tier | LKM claim | Hypothesis bundle |
 |---|---|---|---|---|
+| [A1 — DPI for quantum relative entropy](GaiaPhysicsLean/A1Dpi/) | 1,047 | A | `gcn_6a2c5b36819b448b` | `QRE_PartialTrace_Mono` (Lindblad–Uhlmann partial-trace monotonicity) |
 | [A9 — 2D TQFT ↔ commutative Frobenius algebra](GaiaPhysicsLean/A92dTqftFrobenius/) | 322 | A | `gcn_c8351754bdb44e38` | `TwoCobUP.WithExtend` (free-SMC on one self-dual object) |
 
-**Subtotal**: 322 lines.
+**Subtotal**: 1,369 lines.
 
 ## Index — *axiomatic statement-only* (C-tier)
 
@@ -74,7 +75,7 @@ no hidden sorries or undocumented axioms elsewhere in the module.
 
 **Subtotal**: 144 lines.
 
-**Grand total**: 2,566 lines, 8 theorems (6 unconditional + 1 conditional + 1 C-tier statement-only).
+**Grand total**: 3,613 lines, 9 theorems (6 unconditional + 2 conditional + 1 C-tier statement-only).
 
 
 ## Research-in-progress: PPT² conjecture
@@ -100,12 +101,13 @@ See [`PPT2-project/README.md`](./PPT2-project/README.md) for full status invento
 ## Build
 
 ```bash
-lake build                         # build all eight theorems
+lake build                         # build all nine theorems
+lake build GaiaPhysicsLean.A1Dpi.Theorem                # conditional (Lindblad–Uhlmann hypothesis)
 lake build GaiaPhysicsLean.A2ChoiTheorem.Theorem
 lake build GaiaPhysicsLean.A3Stinespring.Theorem
 lake build GaiaPhysicsLean.A5Nocloning.Theorem
 lake build GaiaPhysicsLean.A7KochenSpecker.Theorem
-lake build GaiaPhysicsLean.A92dTqftFrobenius.Theorem    # conditional
+lake build GaiaPhysicsLean.A92dTqftFrobenius.Theorem    # conditional (TwoCobUP.WithExtend)
 lake build GaiaPhysicsLean.A10Tsirelson.Theorem
 lake build GaiaPhysicsLean.B7NaimarkDilation.Theorem
 lake build GaiaPhysicsLean.C1ReehSchliederAxiomatic.Theorem  # C-tier (single documented sorry)
