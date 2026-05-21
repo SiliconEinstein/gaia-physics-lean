@@ -20,7 +20,7 @@ This makes the main theorem mechanically axiom-free (#print axioms returns
 [propext, Classical.choice, Quot.sound]) without smuggling open problems
 into `axiom` declarations.
 """
-from gaia.lang import claim, support, deduction
+from gaia.engine.lang import claim, support, deduction
 
 mathlib_braided = claim(
     "Mathlib provides braided monoidal categories and strong-monoidal functors "

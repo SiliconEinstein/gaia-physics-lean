@@ -14,7 +14,7 @@ operator-concavity infrastructure needed to prove it. We expose it as the
 explicit hypothesis `QRE_PartialTrace_Mono` on the main theorem,
 analogous to A9's `TwoCobUP.WithExtend` data bundle.
 """
-from gaia.lang import claim, support, deduction
+from gaia.engine.lang import claim, support, deduction
 
 kraus_decomposition = claim(
     "Every CPTP map Λ : QChan dK dH admits a Kraus decomposition: there exist "

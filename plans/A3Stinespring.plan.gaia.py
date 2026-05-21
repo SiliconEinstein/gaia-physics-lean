@@ -8,7 +8,7 @@ orthogonal complement). Stinespring identity E(ρ) = Tr_E[U(ρ⊗|0⟩⟨0|)U†
 follows from V having that ‖|ψ⟩’s tensored slot fixed at |0⟩'’s row in U,
 giving Tr_E[U(ρ⊗|0⟩⟨0|)U†] = Tr_E(V ρ V†) = Σ_k K_k ρ K_k† = E(ρ).
 """
-from gaia.lang import claim, support, deduction
+from gaia.engine.lang import claim, support, deduction
 
 # --- Sub-claims (each with metadata.action so dispatcher schedules a runner) ---
 

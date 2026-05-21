@@ -1,7 +1,7 @@
 """Initial BP plan for Naimark dilation theorem (POVM realizability) (B-tier).
 LKM claim: gcn_b9e7abd2ad804f29
 """
-from gaia.lang import claim, support, deduction, abduction
+from gaia.engine.lang import claim, support, deduction, abduction
 
 # Step 1: Define POVM predicate
 povm_def = claim(

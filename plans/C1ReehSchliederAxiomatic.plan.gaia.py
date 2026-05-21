@@ -5,7 +5,7 @@ C-tier formalization protocol: state the theorem precisely against
 axiomatized Haag-Kastler infrastructure + document the proof gap with
 paper-ref + Mathlib-PR-plan + LOC-estimate.
 """
-from gaia.lang import claim, support, deduction
+from gaia.engine.lang import claim, support, deduction
 
 haag_kastler_axioms = claim(
     "We axiomatize the Haag-Kastler framework: opaque types MinkowskiSpace, "

@@ -3,7 +3,7 @@ LKM claim: gcn_0b8cd733edc4459d
 
 Iter 1 finding: native_decide introduces non-standard axiom. Switching to structural parity proof.
 """
-from gaia.lang import claim, support, deduction, abduction, contradiction
+from gaia.engine.lang import claim, support, deduction, abduction, contradiction
 
 # Premise: Mathlib has finite-dim inner product spaces and decidability
 mathlib_foundations = claim(

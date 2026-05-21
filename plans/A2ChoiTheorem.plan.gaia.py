@@ -8,7 +8,7 @@ Proof strategy: bidirectional equivalence
   each is the Choi matrix of an explicit Kraus operator; sum gives Φ as
   a sum of CP maps.
 """
-from gaia.lang import claim, support, deduction
+from gaia.engine.lang import claim, support, deduction
 
 mathlib_psd_spectral = claim(
     "Mathlib provides Matrix.PosSemidef.spectralTheorem and "

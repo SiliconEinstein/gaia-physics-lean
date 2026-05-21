@@ -1,7 +1,7 @@
 """Initial BP plan for Tsirelson bound for CHSH (≤ 2√2) (A-tier).
 LKM claim: gcn_9f07543c6ff944b0 (premise) + gcn_aea213dfec744535 (SDP conclusion)
 """
-from gaia.lang import claim, support, deduction, abduction
+from gaia.engine.lang import claim, support, deduction, abduction
 
 # Premise 1: Simplified CHSH bound without tensor products
 # For single-system formulation: CHSH = A_0(B_0+B_1) + A_1(B_0-B_1)

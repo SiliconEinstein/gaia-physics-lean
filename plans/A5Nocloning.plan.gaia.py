@@ -6,7 +6,7 @@ If cloning U exists, then U(ψ⊗0) = ψ⊗ψ and U(φ⊗0) = φ⊗φ.
 By unitarity: ⟨ψ⊗0, φ⊗0⟩ = ⟨U(ψ⊗0), U(φ⊗0)⟩ = ⟨ψ⊗ψ, φ⊗φ⟩.
 LHS = ⟨ψ,φ⟩⟨0,0⟩ = ⟨ψ,φ⟩. RHS = ⟨ψ,φ⟩². Contradiction unless ⟨ψ,φ⟩ ∈ {0,1}.
 """
-from gaia.lang import claim, support, deduction, abduction
+from gaia.engine.lang import claim, support, deduction, abduction
 
 # Premise 1: Mathlib has unitary operators and tensor products
 mathlib_unitary = claim(
