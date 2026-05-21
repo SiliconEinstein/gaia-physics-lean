@@ -1,7 +1,7 @@
 """Initial BP plan for Naimark dilation theorem (POVM realizability) (B-tier).
 LKM claim: gcn_b9e7abd2ad804f29
 """
-from gaia.engine.lang import claim, support, deduction, abduction
+from gaia.engine.lang import claim, derive, abduction
 
 # Step 1: Define POVM predicate
 povm_def = claim(
@@ -114,10 +114,7 @@ fix_construction = claim(
 action_id="act_fix_isometry_iter05", action_status="done", verify_history=[{"source": "verify:main_agent", "action_id": "act_fix_isometry_iter05", "verdict": "verified", "confidence": "0.950", "evidence": "Isometry construction fully implemented: naimarkIsometry V defined, V† * V = 1 proven, V† * P_i * V = E_i proven, main theorem uses this construction, only standard axioms, no sorry statements, lake build rc=0"}])
 
 # Connect the proof structure
-deduction(
-    premises=[povm_def, hermitian_claim, idempotency_claim, orthogonality_claim, completeness_claim, typeclass_repair, complete_proofs, fix_construction],
-    conclusion=target,
-    reason=(
+derive(target, given=[povm_def, hermitian_claim, idempotency_claim, orthogonality_claim, completeness_claim, typeclass_repair, complete_proofs, fix_construction], rationale=(
         "The main theorem follows by: (1) defining POVM, (2) proving P_i are Hermitian, "
         "(3) proving P_i are idempotent, (4) proving P_i are orthogonal, (5) proving P_i "
         "sum to identity. Partial trace already proven. (6) All typeclass instances resolved. "
@@ -127,5 +124,4 @@ deduction(
         "Judgment: deductive composition of component lemmas yields naimark_dilation_finite. "
         "Provenance: LKM gcn_b9e7abd2ad804f29; PROBLEM.md; mirror of A3 Stinespring construction."
     ),
-    prior=0.7,
 )

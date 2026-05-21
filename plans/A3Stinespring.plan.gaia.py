@@ -8,7 +8,7 @@ orthogonal complement). Stinespring identity E(ρ) = Tr_E[U(ρ⊗|0⟩⟨0|)U†
 follows from V having that ‖|ψ⟩’s tensored slot fixed at |0⟩'’s row in U,
 giving Tr_E[U(ρ⊗|0⟩⟨0|)U†] = Tr_E(V ρ V†) = Σ_k K_k ρ K_k† = E(ρ).
 """
-from gaia.engine.lang import claim, support, deduction
+from gaia.engine.lang import claim, derive
 
 # --- Sub-claims (each with metadata.action so dispatcher schedules a runner) ---
 
@@ -339,61 +339,32 @@ action_id="act_0b3efff9f35b", action_status="failed", verify_history=[{"source":
 # --- Strategy graph ---
 
 # definitions support every downstream artifact
-support(premises=[claim_defs], conclusion=claim_kraus,
-        reason="Kraus extraction needs QChan, IsCP, IsTP definitions.", prior=0.9)
-support(premises=[claim_defs], conclusion=claim_isometry,
-        reason="Isometry construction needs StinespringData record fields.", prior=0.9)
-support(premises=[claim_defs, claim_kraus], conclusion=claim_isometry,
-        reason="V is built directly from the Kraus operators.", prior=0.85)
-support(premises=[claim_isometry], conclusion=claim_unitary_extend,
-        reason="Extension only needs that V has orthonormal columns.", prior=0.85)
-support(premises=[claim_kraus, claim_unitary_extend], conclusion=claim_partial_trace,
-        reason="Partial-trace identity uses both Kraus expansion and the unitary structure.", prior=0.85)
+derive(claim_kraus, given=[claim_defs], rationale="Kraus extraction needs QChan, IsCP, IsTP definitions.")
+derive(claim_isometry, given=[claim_defs], rationale="Isometry construction needs StinespringData record fields.")
+derive(claim_isometry, given=[claim_defs, claim_kraus], rationale="V is built directly from the Kraus operators.")
+derive(claim_unitary_extend, given=[claim_isometry], rationale="Extension only needs that V has orthonormal columns.")
+derive(claim_partial_trace, given=[claim_kraus, claim_unitary_extend], rationale="Partial-trace identity uses both Kraus expansion and the unitary structure.")
 
 # New helper claims support the main lemmas
-support(premises=[claim_kraus_tp_helper, claim_kraus_channel_helper], conclusion=claim_kraus,
-        reason="kraus_decomposition theorem needs both TP condition and channel identity helpers.", prior=0.9)
-support(premises=[claim_unitary_extend_proof], conclusion=claim_unitary_extend,
-        reason="Filling the sorry in isometry_extends_to_unitary completes the claim.", prior=0.95)
-support(premises=[claim_partial_trace_proof], conclusion=claim_partial_trace,
-        reason="Filling the sorry in partial_trace_dilation completes the claim.", prior=0.95)
+derive(claim_kraus, given=[claim_kraus_tp_helper, claim_kraus_channel_helper], rationale="kraus_decomposition theorem needs both TP condition and channel identity helpers.")
+derive(claim_unitary_extend, given=[claim_unitary_extend_proof], rationale="Filling the sorry in isometry_extends_to_unitary completes the claim.")
+derive(claim_partial_trace, given=[claim_partial_trace_proof], rationale="Filling the sorry in partial_trace_dilation completes the claim.")
 
 # v2 claims (iter-2 resume) wire into existing parents
-support(premises=[claim_isometry_extend_v2], conclusion=claim_unitary_extend,
-        reason="Filling sorry at L191 in isometry_extends_to_unitary directly discharges the parent claim.",
-        prior=0.95)
-support(premises=[claim_partial_trace_v2], conclusion=claim_partial_trace,
-        reason="Filling sorry at L209 in partial_trace_dilation directly discharges the parent claim.",
-        prior=0.95)
-support(premises=[claim_kraus_tp_v2, claim_kraus_channel_v2], conclusion=claim_kraus,
-        reason="Filling both Choi-Kraus sorries (L73, L84) closes kraus_decomposition.",
-        prior=0.9)
+derive(claim_unitary_extend, given=[claim_isometry_extend_v2], rationale="Filling sorry at L191 in isometry_extends_to_unitary directly discharges the parent claim.")
+derive(claim_partial_trace, given=[claim_partial_trace_v2], rationale="Filling sorry at L209 in partial_trace_dilation directly discharges the parent claim.")
+derive(claim_kraus, given=[claim_kraus_tp_v2, claim_kraus_channel_v2], rationale="Filling both Choi-Kraus sorries (L73, L84) closes kraus_decomposition.")
 
 # iter-2 signature fix and final proofs
-support(premises=[claim_fix_isometry_signature], conclusion=claim_complete_isometry_proof,
-        reason="Signature fix is prerequisite for completing the isometry extension proof.",
-        prior=0.95)
-support(premises=[claim_complete_isometry_proof], conclusion=claim_unitary_extend,
-        reason="Completing the proof at line 543 closes isometry_extends_to_unitary.",
-        prior=0.95)
-support(premises=[claim_fix_isometry_signature, claim_complete_isometry_proof], conclusion=claim_complete_partial_trace,
-        reason="partial_trace_dilation depends on well-typed hU_col from fixed isometry_extends_to_unitary.",
-        prior=0.9)
-support(premises=[claim_complete_partial_trace], conclusion=claim_partial_trace,
-        reason="Completing the proof at line 607 closes partial_trace_dilation.",
-        prior=0.95)
+derive(claim_complete_isometry_proof, given=[claim_fix_isometry_signature], rationale="Signature fix is prerequisite for completing the isometry extension proof.")
+derive(claim_unitary_extend, given=[claim_complete_isometry_proof], rationale="Completing the proof at line 543 closes isometry_extends_to_unitary.")
+derive(claim_complete_partial_trace, given=[claim_fix_isometry_signature, claim_complete_isometry_proof], rationale="partial_trace_dilation depends on well-typed hU_col from fixed isometry_extends_to_unitary.")
+derive(claim_partial_trace, given=[claim_complete_partial_trace], rationale="Completing the proof at line 607 closes partial_trace_dilation.")
 
 # iter-4 cut-sever: the inline Choi-PSD proof is a strict prerequisite for
 # kraus_decomposition under the no-A2-edits constraint.
-support(premises=[claim_choi_psd_from_iscp_inline], conclusion=claim_kraus,
-        reason="Severing the A3→A2.Forward dependency at Lemmas.lean:370 is the "
+derive(claim_kraus, given=[claim_choi_psd_from_iscp_inline], rationale="Severing the A3→A2.Forward dependency at Lemmas.lean:370 is the "
                "one missing piece blocking lake build. Without this, "
-               "kraus_decomposition cannot elaborate.",
-        prior=0.95)
+               "kraus_decomposition cannot elaborate.")
 
-deduction(
-    premises=[claim_defs, claim_kraus, claim_isometry, claim_unitary_extend, claim_partial_trace],
-    conclusion=target,
-    reason="Defs + Kraus + isometry + unitary extension + partial-trace identity assemble into the main theorem.",
-    prior=0.9,
-)
+derive(target, given=[claim_defs, claim_kraus, claim_isometry, claim_unitary_extend, claim_partial_trace], rationale="Defs + Kraus + isometry + unitary extension + partial-trace identity assemble into the main theorem.",)

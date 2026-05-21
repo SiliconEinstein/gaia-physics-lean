@@ -8,7 +8,7 @@ Proof strategy: bidirectional equivalence
   each is the Choi matrix of an explicit Kraus operator; sum gives Φ as
   a sum of CP maps.
 """
-from gaia.engine.lang import claim, support, deduction
+from gaia.engine.lang import claim, derive
 
 mathlib_psd_spectral = claim(
     "Mathlib provides Matrix.PosSemidef.spectralTheorem and "
@@ -69,10 +69,5 @@ target = claim(
     },
 )
 
-deduction(
-    premises=[mathlib_psd_spectral, choi_construction, forward_direction, reverse_direction],
-    conclusion=target,
-    reason="Forward and reverse directions assemble into the bidirectional "
-            "equivalence via simple iff-introduction.",
-    prior=0.97,
-)
+derive(target, given=[mathlib_psd_spectral, choi_construction, forward_direction, reverse_direction], rationale="Forward and reverse directions assemble into the bidirectional "
+            "equivalence via simple iff-introduction.",)

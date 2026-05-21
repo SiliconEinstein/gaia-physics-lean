@@ -20,7 +20,7 @@ This makes the main theorem mechanically axiom-free (#print axioms returns
 [propext, Classical.choice, Quot.sound]) without smuggling open problems
 into `axiom` declarations.
 """
-from gaia.engine.lang import claim, support, deduction
+from gaia.engine.lang import claim, derive
 
 mathlib_braided = claim(
     "Mathlib provides braided monoidal categories and strong-monoidal functors "
@@ -77,12 +77,7 @@ target = claim(
     },
 )
 
-deduction(
-    premises=[mathlib_braided, commfrob_structure, two_cob_up_bundle],
-    conclusion=target,
-    reason="Given the Mathlib braided/strong-monoidal infrastructure, our "
+derive(target, given=[mathlib_braided, commfrob_structure, two_cob_up_bundle], rationale="Given the Mathlib braided/strong-monoidal infrastructure, our "
             "CommFrobeniusObj definition, and the TwoCobUP.WithExtend bundle, "
             "the classifying equivalence assembles in 11 lines by unpacking "
-            "the extension functor's fields.",
-    prior=0.95,
-)
+            "the extension functor's fields.",)

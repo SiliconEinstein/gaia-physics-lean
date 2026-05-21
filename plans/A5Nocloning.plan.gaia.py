@@ -6,7 +6,7 @@ If cloning U exists, then U(ψ⊗0) = ψ⊗ψ and U(φ⊗0) = φ⊗φ.
 By unitarity: ⟨ψ⊗0, φ⊗0⟩ = ⟨U(ψ⊗0), U(φ⊗0)⟩ = ⟨ψ⊗ψ, φ⊗φ⟩.
 LHS = ⟨ψ,φ⟩⟨0,0⟩ = ⟨ψ,φ⟩. RHS = ⟨ψ,φ⟩². Contradiction unless ⟨ψ,φ⟩ ∈ {0,1}.
 """
-from gaia.engine.lang import claim, support, deduction, abduction
+from gaia.engine.lang import claim, derive, abduction
 
 # Premise 1: Mathlib has unitary operators and tensor products
 mathlib_unitary = claim(
@@ -55,9 +55,4 @@ target = claim(
 )
 
 # Connect premises to target
-deduction(
-    premises=[mathlib_unitary, tensor_inner, noncollinear_exists],
-    conclusion=target,
-    reason="Given unitarity preserves inner products, tensor inner product formula, and existence of non-collinear vectors, we derive contradiction from cloning assumption.",
-    prior=0.85,
-)
+derive(target, given=[mathlib_unitary, tensor_inner, noncollinear_exists], rationale="Given unitarity preserves inner products, tensor inner product formula, and existence of non-collinear vectors, we derive contradiction from cloning assumption.",)

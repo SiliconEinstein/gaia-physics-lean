@@ -1,7 +1,7 @@
 """Initial BP plan for Tsirelson bound for CHSH (≤ 2√2) (A-tier).
 LKM claim: gcn_9f07543c6ff944b0 (premise) + gcn_aea213dfec744535 (SDP conclusion)
 """
-from gaia.engine.lang import claim, support, deduction, abduction
+from gaia.engine.lang import claim, derive, abduction
 
 # Premise 1: Simplified CHSH bound without tensor products
 # For single-system formulation: CHSH = A_0(B_0+B_1) + A_1(B_0-B_1)
@@ -65,9 +65,5 @@ target = claim(
 )
 
 # Strategy: deduce target from premises
-deduction(
-    premises=[chsh_operator_norm, commutator_bound, norm_from_squared],
-    conclusion=target,
-    reason="Tsirelson's algebraic proof: (1) show CHSH operator has bounded norm via algebraic expansion, (2) use commutator bounds and dichotomic property, (3) apply spectral theorem for self-adjoint operators to get ||CHSH|| ≤ 2√2.",
-    prior=0.8,
+derive(target, given=[chsh_operator_norm, commutator_bound, norm_from_squared], rationale="Tsirelson's algebraic proof: (1) show CHSH operator has bounded norm via algebraic expansion, (2) use commutator bounds and dichotomic property, (3) apply spectral theorem for self-adjoint operators to get ||CHSH|| ≤ 2√2.",
 )

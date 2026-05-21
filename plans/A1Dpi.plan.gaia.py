@@ -14,7 +14,7 @@ operator-concavity infrastructure needed to prove it. We expose it as the
 explicit hypothesis `QRE_PartialTrace_Mono` on the main theorem,
 analogous to A9's `TwoCobUP.WithExtend` data bundle.
 """
-from gaia.engine.lang import claim, support, deduction
+from gaia.engine.lang import claim, derive
 
 kraus_decomposition = claim(
     "Every CPTP map Λ : QChan dK dH admits a Kraus decomposition: there exist "
@@ -87,12 +87,8 @@ target = claim(
     },
 )
 
-deduction(
-    premises=[kraus_decomposition, stinespring_isometric, isometric_invariance,
-                qre_partial_trace_mono_hypothesis],
-    conclusion=target,
-    reason="Stinespring reduces CPTP to isometric-conjugation + partial-trace. "
+derive(target, given=[kraus_decomposition, stinespring_isometric, isometric_invariance,
+                qre_partial_trace_mono_hypothesis], rationale="Stinespring reduces CPTP to isometric-conjugation + partial-trace. "
             "Isometric invariance handles the V-conjugation step (proved). "
             "Partial-trace monotonicity handles the Tr_E step (hypothesis).",
-    prior=0.95,
 )

@@ -5,7 +5,7 @@ C-tier formalization protocol: state the theorem precisely against
 axiomatized Haag-Kastler infrastructure + document the proof gap with
 paper-ref + Mathlib-PR-plan + LOC-estimate.
 """
-from gaia.engine.lang import claim, support, deduction
+from gaia.engine.lang import claim, derive
 
 haag_kastler_axioms = claim(
     "We axiomatize the Haag-Kastler framework: opaque types MinkowskiSpace, "
@@ -42,12 +42,8 @@ target = claim(
     },
 )
 
-deduction(
-    premises=[haag_kastler_axioms],
-    conclusion=target,
-    reason="Given the axiomatized Haag-Kastler substrate, the theorem statement "
+derive(target, given=[haag_kastler_axioms], rationale="Given the axiomatized Haag-Kastler substrate, the theorem statement "
             "type-checks. The proof itself uses weak additivity + irreducibility "
             "+ analytic continuation (the Reeh-Schlieder argument), which depends "
             "on Tomita-Takesaki modular theory not yet in Mathlib.",
-    prior=0.95,
 )

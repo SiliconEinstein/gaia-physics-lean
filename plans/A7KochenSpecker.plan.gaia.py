@@ -3,7 +3,7 @@ LKM claim: gcn_0b8cd733edc4459d
 
 Iter 1 finding: native_decide introduces non-standard axiom. Switching to structural parity proof.
 """
-from gaia.engine.lang import claim, support, deduction, abduction, contradiction
+from gaia.engine.lang import claim, derive, abduction, contradict
 
 # Premise: Mathlib has finite-dim inner product spaces and decidability
 mathlib_foundations = claim(
@@ -94,16 +94,11 @@ target_structural = claim(
 action_id="act_372342e9733a", action_status="failed", verify_history=[{"source": "verify:unavailable", "action_id": "act_372342e9733a", "verdict": "inconclusive", "confidence": "0.000", "evidence": "lean 路径越权"}])
 
 # Strategy: structural proof via parity
-lcs_f7123d44b575e01d = deduction(
-    premises=[vector_appearance_count, sum_basis_count_lemma, ks_valuation_sum_nine, parity_contradiction],
-    conclusion=target_structural,
-    reason="Parity argument: if isKSValuation a holds, then sum = 9 (odd) but also sum = 2*trueCount (even), contradiction.",
-    prior=0.8
-)
+lcs_f7123d44b575e01d = derive(target_structural, given=[vector_appearance_count, sum_basis_count_lemma, ks_valuation_sum_nine, parity_contradiction], rationale="Parity argument: if isKSValuation a holds, then sum = 9 (odd) but also sum = 2*trueCount (even), contradiction.")
 
 # Connect mathlib_foundations as background support
-support(premises=[mathlib_foundations], conclusion=vector_encoding)
-support(premises=[mathlib_foundations], conclusion=vector_appearance_count)
+derive(vector_encoding, given=[mathlib_foundations])
+derive(vector_appearance_count, given=[mathlib_foundations])
 
 # Old target with native_decide (kept for reference but not connected)
 target_native = claim(
