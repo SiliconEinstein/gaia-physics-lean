@@ -42,34 +42,38 @@ hidden `sorry`s or undocumented axioms elsewhere in the module.
 ## What this file actually formalizes
 
 * **`Defs.lean`** — the Haag–Kastler axiomatic substrate:
-  * Opaque types: `MinkowskiSpace`, `HilbertSpace`, `BoundedOp`.
+  * Opaque type: `MinkowskiSpace`.
   * Causal structure: `causalComplement : Set MinkowskiSpace → Set MinkowskiSpace`,
     `HasNonEmptyCausalComplement`.
-  * Operator algebra ops: `opNorm`, `opSub`, `opMul`, `opApply`, `opZero`.
+  * Hilbert-space substrate: `H : Type` with Mathlib's
+    `[NormedAddCommGroup H] [InnerProductSpace ℂ H]`.
+  * Bounded operators: `BoundedOp H := H →L[ℂ] H` using Mathlib's
+    `ContinuousLinearMap`.
   * `LocalNet` structure bundling isotony / locality / weak_additivity.
-  * `VacuumRep` bundling vacuum vector + irreducibility flag.
-  * Predicates `IsCyclicVector`, `IsSeparatingVector` declared as axiomatized
-    propositions.
+  * `VacuumRep` bundling a normalized vacuum vector and an irreducibility
+    condition on closed invariant subspaces.
+  * Predicates `IsCyclicVector`, `IsSeparatingVector` defined using Mathlib's
+    `Dense` and bounded-operator application.
 
 * **`Theorem.lean`** —
 
 ```lean
 theorem reeh_schlieder_cyclic_and_separating
-    (rep : VacuumRep)
+    (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
+    (rep : VacuumRep H)
     (O : Set MinkowskiSpace)
     (hO : HasNonEmptyCausalComplement O) :
-    IsCyclicVector rep.vacuum (rep.net.alg O) ∧
-    IsSeparatingVector rep.vacuum (rep.net.alg O) := by
+    IsCyclicVector H rep.vacuum (rep.net.alg O) ∧
+    IsSeparatingVector H rep.vacuum (rep.net.alg O) := by
   sorry  -- gap_kind: open_modular_theory (see docstring)
 ```
 
 ## What this file is *not*
 
 * **Not a proof.** Reeh–Schlieder requires modular theory; this is C-tier.
-* **Not Hilbert-space-concrete.** `HilbertSpace` and `BoundedOp` are opaque
-  axiomatized types — once Mathlib's modular-theory infrastructure exists,
-  the natural follow-up project will be to instantiate these against
-  Mathlib's `InnerProductSpace ℂ H` / `ContinuousLinearMap` substrate.
+* **Not a Lorentzian-geometry formalization.** `MinkowskiSpace` and
+  `causalComplement` remain opaque substrate axioms until Mathlib has the
+  needed Minkowski causal-geometry layer.
 
 ## Verify
 
@@ -82,15 +86,12 @@ lake build GaiaPhysicsLean.C1ReehSchliederAxiomatic.Theorem
 
 The `sorry` warning is the documented one.
 
-## Process note (manual repair, 2026-05-19)
+## Process note (iter4, 2026-05-27)
 
-The agent's iter-4 run mis-diagnosed the module as "system overload preventing
-lake build verification" — a false positive caused by `Defs.lean` shipping
-**no imports** while using `Set MinkowskiSpace`, which made the elaborator
-spin until lake's timeout fired (rc=124). The watchdog's `TERMINAL.success` →
-`fake_success` downgrade caught the symptom. A 2-line manual fix —
-`import Mathlib.Data.Set.Basic` in `Defs.lean` plus stripping a bogus
-`{H : Type*} [NormedAddCommGroup H] ...` binder on the theorem signature
-(`VacuumRep` is unparameterized in the agent's own `Defs.lean`) — made the
-module compile cleanly with exactly the single documented `sorry`. The
-upstream `lean_swarm` project ledger has been updated accordingly.
+The C1 swarm reduced the substrate from 11 axioms to 2 by replacing the opaque
+`HilbertSpace`, `BoundedOp`, operator operations, and cyclic/separating
+predicates with Mathlib's `InnerProductSpace`, `ContinuousLinearMap`, normed
+operator algebra operations, `Dense`, and explicit separating-vector
+definitions. The only remaining substrate axioms are `MinkowskiSpace` and
+`causalComplement`; the single theorem `sorry` remains the documented
+Tomita–Takesaki modular-theory gap.

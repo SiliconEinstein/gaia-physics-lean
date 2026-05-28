@@ -71,11 +71,11 @@ no hidden sorries or undocumented axioms elsewhere in the module.
 
 | Theorem | LOC | Tier | LKM claim | Substrate axioms |
 |---|---|---|---|---|
-| [C1 — Reeh–Schlieder (cyclic + separating)](GaiaPhysicsLean/C1ReehSchliederAxiomatic/) | 144 | C | `gcn_687a62424c964753` | Haag–Kastler framework (`MinkowskiSpace`, `HilbertSpace`, `BoundedOp`, `LocalNet`, `VacuumRep`) |
+| [C1 — Reeh–Schlieder (cyclic + separating)](GaiaPhysicsLean/C1ReehSchliederAxiomatic/) | 135 | C | `gcn_687a62424c964753` | Minkowski causal substrate (`MinkowskiSpace`, `causalComplement`) |
 
-**Subtotal**: 144 lines.
+**Subtotal**: 135 lines.
 
-**Grand total**: 3,613 lines, 9 theorems (6 unconditional + 2 conditional + 1 C-tier statement-only).
+**Grand total**: 3,604 lines, 9 theorems (6 unconditional + 2 conditional + 1 C-tier statement-only).
 
 
 ## Research-in-progress: PPT² conjecture

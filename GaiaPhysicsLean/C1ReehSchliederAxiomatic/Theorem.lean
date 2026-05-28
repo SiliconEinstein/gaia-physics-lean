@@ -42,11 +42,12 @@ The key steps are:
    using locality (Einstein causality) to transfer the cyclic property.
 -/
 theorem reeh_schlieder_cyclic_and_separating
-    (rep : VacuumRep)
+    (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
+    (rep : VacuumRep H)
     (O : Set MinkowskiSpace)
     (hO : HasNonEmptyCausalComplement O) :
-    IsCyclicVector rep.vacuum (rep.net.alg O) ∧
-    IsSeparatingVector rep.vacuum (rep.net.alg O) := by
+    IsCyclicVector H rep.vacuum (rep.net.alg O) ∧
+    IsSeparatingVector H rep.vacuum (rep.net.alg O) := by
   /- gap_kind: open_modular_theory
      Proof requires Tomita–Takesaki modular theory (not in Mathlib).
      mathlib_pr_plan: formalize modular operator Δ and modular conjugation J
