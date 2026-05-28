@@ -7,5 +7,6 @@ import GaiaPhysicsLean.A5Nocloning.Theorem
 import GaiaPhysicsLean.A7KochenSpecker.Theorem
 import GaiaPhysicsLean.A92dTqftFrobenius.Theorem
 import GaiaPhysicsLean.A10Tsirelson.Theorem
+import GaiaPhysicsLean.B6FkgInequality.Theorem
 import GaiaPhysicsLean.B7NaimarkDilation.Theorem
 import GaiaPhysicsLean.C1ReehSchliederAxiomatic.Theorem

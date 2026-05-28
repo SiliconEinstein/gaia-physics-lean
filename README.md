@@ -35,9 +35,10 @@ informal statement requires. The agent built every Mathlib gap it ran into.
 | [A5 — No-cloning](GaiaPhysicsLean/A5Nocloning/) | 89 | A | `gcn_054b79cf1e5740d0` |
 | [A7 — Kochen–Specker (CEGA 18-vector)](GaiaPhysicsLean/A7KochenSpecker/) | 218 | A | `gcn_0b8cd733edc4459d` |
 | [A10 — Tsirelson CHSH bound](GaiaPhysicsLean/A10Tsirelson/) | 171 | A | `gcn_9f07543c6ff944b0` |
+| [B6 — FKG inequality for ferromagnetic Ising](GaiaPhysicsLean/B6FkgInequality/) | 326 | B | `gcn_46b3420ea41e4842` |
 | [B7 — Naimark POVM dilation](GaiaPhysicsLean/B7NaimarkDilation/) | 347 | B | `gcn_b9e7abd2ad804f29` |
 
-**Subtotal**: 2,100 lines covering six foundational results of quantum mechanics.
+**Subtotal**: 2,426 lines covering seven foundational results of quantum mechanics and statistical mechanics.
 
 ## Index — *conditional* theorems
 
@@ -75,7 +76,7 @@ no hidden sorries or undocumented axioms elsewhere in the module.
 
 **Subtotal**: 135 lines.
 
-**Grand total**: 3,604 lines, 9 theorems (6 unconditional + 2 conditional + 1 C-tier statement-only).
+**Grand total**: 3,930 lines, 10 theorems (7 unconditional + 2 conditional + 1 C-tier statement-only).
 
 
 ## Research-in-progress: PPT² conjecture
@@ -101,7 +102,7 @@ See [`PPT2-project/README.md`](./PPT2-project/README.md) for full status invento
 ## Build
 
 ```bash
-lake build                         # build all nine theorems
+lake build                         # build all ten theorems
 lake build GaiaPhysicsLean.A1Dpi.Theorem                # conditional (Lindblad–Uhlmann hypothesis)
 lake build GaiaPhysicsLean.A2ChoiTheorem.Theorem
 lake build GaiaPhysicsLean.A3Stinespring.Theorem
@@ -109,6 +110,7 @@ lake build GaiaPhysicsLean.A5Nocloning.Theorem
 lake build GaiaPhysicsLean.A7KochenSpecker.Theorem
 lake build GaiaPhysicsLean.A92dTqftFrobenius.Theorem    # conditional (TwoCobUP.WithExtend)
 lake build GaiaPhysicsLean.A10Tsirelson.Theorem
+lake build GaiaPhysicsLean.B6FkgInequality.Theorem
 lake build GaiaPhysicsLean.B7NaimarkDilation.Theorem
 lake build GaiaPhysicsLean.C1ReehSchliederAxiomatic.Theorem  # C-tier (single documented sorry)
 ```
